@@ -57,6 +57,33 @@ $    sb.violinplot(x='class', y=column, data=dataframe)
 - Check if data is normally distributed; otherwise, cannot use models that assume the underlying
   data is normally distributed.
 
+Pandas DataFrames has built-in functions to display gereralized information about the data.
+$ df.describe() # provides matrix of: count, mean, std, min, etc. of dataframe columns
+$ df.info() # provides list of columns, data types, and number of non-null entries in each column
+$ df.dtypes # provides list of data types for each column only
+
+View distributions in MatPlotLib:
+$ import pylab as plt
+$ plt.rc('figure', figsize=(10, 5)) # set default size of MatPlotLib figures
+$ figsize_with_subplots = (10, 10) # size of figures with subplots
+$ bin_size = 10 # size of histogram bins
+$ fig = plt.figure(figsize=figsize_with_subplots)
+$ fig_dims = (3, 2)
+$ plt.subplot2grid(fig_dims, (0, 0))
+$ df['column name'].value_counts().plot(kind='bar', title='Subplot Title') # great way to plot histos
+$ plt.subplot2grid(fig_dims, (0, 1))
+$ df['column name'].hist()
+$ plt.title('Subplot Title')
+
+Get a cross table of different columns in dataframe:
+$ pclass_xt = pd.crosstab(df['column_1'], df['column_2'])
+
+Plot histogram of cross table above (previous step):
+$ pclass_xt_pct = pclass_xt.div(pclass_xt.sum(1).astype(float), axis=0) # normalize to 1.0
+$ pclass_xt_pct.plot(kind='bar', stacked=True, title='Some Title')
+$ plt.xlabel('column_1')
+$ plt.ylabel('column_2')
+
 _____________________________________________________________________________________________
 
 Model Accuracy:
@@ -80,6 +107,23 @@ Model Accuracy:
   to be the training data and the rest as the test data. Measure the test accuracy, and then
   repeat process with choosing a different subset as the training data. Repeat until all
   K subsets have been used separately as training sets. Average the testing accuracies.
+
+- Confusion matrix is used to score your model: Binary Matrix (example) is as follows:
+
+  -------------------------------------------------------
+  |                  | Condition True | Condition False |
+  |------------------|----------------|-----------------|
+  | Prediction True  | True Positive  | False Positive  |
+  |------------------|----------------|-----------------|
+  | Prediction False | False Negative | True Negative   |
+  -------------------------------------------------------
+
+  Precision = True Positive (TP) / ( True Positive (TP) + False Positive (FP) )
+  Recall = TP / ( TP + False Negative (FN) )
+  F1 = 2 * TP / (2 * TP + FP + FN )  # model is best when F1 = 1.0 and worst at F1 = 0.0
+
+-- F-measures do not account for True Negatives. Possible alternatives include:
+   Matthews Correlation Coefficient, Informedness, or Cohen's Kappa.
 
 ____________________________________________________________________________________________
 
