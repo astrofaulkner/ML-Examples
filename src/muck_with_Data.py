@@ -51,6 +51,7 @@ def run_test():
     for i in range(len(df.index)):
         df['FN_len'][i] = len(df['name'][i])-len(df['ext'][i])
     #sb.jointplot(data=df, x='ext_val', y='FN_len', kind='reg', color='g')
+    sb.kdeplot(df.ext_val, df.FN_len)
 
     # Create pivot table of result vs ext for mean filename length
     df['ext_val_trumpd'] = 0
@@ -60,7 +61,7 @@ def run_test():
     #sb.heatmap(df3, annot=True, fmt=".1f")
 
     # Create Pearson's correlation coefficient matrix for dataframe
-    sb.heatmap(df.corr(), annot=True, fmt=".2f")
+    #sb.heatmap(df.corr(), annot=True, fmt=".2f")
 
     pyl.show()
 
